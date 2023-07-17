@@ -37,6 +37,7 @@ class mainWindow(QMainWindow):
     def showNewTaskDialog(self):
         text, ok = QInputDialog.getText(self, "新建下载任务", "输入下载地址")
         if ok:
+            print("input dialog show")
             pass
 
     def center(self):
