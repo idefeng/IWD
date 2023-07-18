@@ -1,7 +1,10 @@
 import sys
+import os
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction, QMainWindow, qApp
+
+from services.download_services import download
 
 
 class mainWindow(QMainWindow):
@@ -30,15 +33,17 @@ class mainWindow(QMainWindow):
         fileMenu.addAction(newTaskAction)
         fileMenu.addAction(extAction)
 
+        self.setGeometry(300, 300, 800, 500)
         self.center()
         self.setWindowTitle("IWD下载器")
         self.show()
 
     def showNewTaskDialog(self):
-        text, ok = QInputDialog.getText(self, "新建下载任务", "输入下载地址")
+        url, ok = QInputDialog.getText(self, "新建下载任务", "输入下载地址")
         if ok:
-            print("input dialog show")
-            pass
+            print(url)
+            print(os.path.basename(url))
+            download(url, os.path.basename(url))
 
     def center(self):
         qr = self.frameGeometry()
