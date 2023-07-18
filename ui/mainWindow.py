@@ -46,13 +46,38 @@ class mainWindow(QMainWindow):
         ext = QAction(QIcon("./images/exit.png"), "退出", self)
         toolbar.addAction(ext)
         # --------------主窗口布局-----------------------------
-
+        hbox = QHBoxLayout()
         btn1 = QPushButton("111")
         btn2 = QPushButton("222")
-        hbox = QHBoxLayout()
+        typeTree = QTreeWidget()
+        typeTree.setHeaderLabels(["类型"])
+        root = QTreeWidgetItem(typeTree)
+        root.setText(0, "全部任务")
+        root.setIcon(0, QIcon("./images/folder.png"))
 
-        hbox.addWidget(btn1)
-        hbox.addWidget(btn2)
+        child1 = QTreeWidgetItem(root)
+        child1.setText(0, "压缩文件")
+        child1.setIcon(0, QIcon("./images/zip.png"))
+
+        child1 = QTreeWidgetItem(root)
+        child1.setText(0, "文档")
+        child1.setIcon(0, QIcon("./images/doc.png"))
+
+        child1 = QTreeWidgetItem(root)
+        child1.setText(0, "音乐")
+        child1.setIcon(0, QIcon("./images/music.png"))
+
+        child1 = QTreeWidgetItem(root)
+        child1.setText(0, "视频")
+        child1.setIcon(0, QIcon("./images/video.png"))
+
+        child1 = QTreeWidgetItem(root)
+        child1.setText(0, "程序")
+        child1.setIcon(0, QIcon("./images/exe.png"))
+
+        typeTree.expandAll()
+        hbox.addWidget(typeTree)
+        hbox.addWidget(btn2, 2)
 
         # ----下面3行代码解决在QMainWindow中布局问题
         widget = QWidget()
