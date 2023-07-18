@@ -3,7 +3,7 @@ import os
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction, QMainWindow, qApp, QWidget
-from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QTreeWidget, QTreeWidgetItem, QPushButton
+from PyQt5.QtWidgets import QHBoxLayout, QTreeWidget, QTreeWidgetItem, QTableWidget
 
 from services.download_services import download
 
@@ -43,50 +43,66 @@ class mainWindow(QMainWindow):
         toolbar.addAction(start)
         pause = QAction(QIcon("./images/pause.png"), "暂停下载", self)
         toolbar.addAction(pause)
+        setting = QAction(QIcon("./images/setting.png"), "配置", self)
+        toolbar.addAction(setting)
         ext = QAction(QIcon("./images/exit.png"), "退出", self)
         toolbar.addAction(ext)
         # --------------主窗口布局-----------------------------
         hbox = QHBoxLayout()
-        btn1 = QPushButton("111")
-        btn2 = QPushButton("222")
+
         typeTree = QTreeWidget()
-        typeTree.setHeaderLabels(["类型"])
+        typeTree.setHeaderLabels(["类型", "数量"])
         root = QTreeWidgetItem(typeTree)
         root.setText(0, "全部任务")
         root.setIcon(0, QIcon("./images/folder.png"))
 
         child1 = QTreeWidgetItem(root)
         child1.setText(0, "压缩文件")
+        child1.setText(1, "0")
         child1.setIcon(0, QIcon("./images/zip.png"))
 
-        child1 = QTreeWidgetItem(root)
-        child1.setText(0, "文档")
-        child1.setIcon(0, QIcon("./images/doc.png"))
+        child2 = QTreeWidgetItem(root)
+        child2.setText(0, "文档")
+        child2.setText(1, "0")
+        child2.setIcon(0, QIcon("./images/doc.png"))
 
-        child1 = QTreeWidgetItem(root)
-        child1.setText(0, "音乐")
-        child1.setIcon(0, QIcon("./images/music.png"))
+        child3 = QTreeWidgetItem(root)
+        child3.setText(0, "音乐")
+        child3.setText(1, "0")
+        child3.setIcon(0, QIcon("./images/music.png"))
 
-        child1 = QTreeWidgetItem(root)
-        child1.setText(0, "视频")
-        child1.setIcon(0, QIcon("./images/video.png"))
+        child4 = QTreeWidgetItem(root)
+        child4.setText(0, "视频")
+        child4.setText(1, "0")
+        child4.setIcon(0, QIcon("./images/video.png"))
 
-        child1 = QTreeWidgetItem(root)
-        child1.setText(0, "程序")
-        child1.setIcon(0, QIcon("./images/exe.png"))
+        child5 = QTreeWidgetItem(root)
+        child5.setText(0, "程序")
+        child5.setText(1, "0")
+        child5.setIcon(0, QIcon("./images/exe.png"))
+
+        child6 = QTreeWidgetItem(root)
+        child6.setText(0, "未知类型")
+        child6.setText(1, "0")
+        child6.setIcon(0, QIcon("./images/other.png"))
 
         typeTree.expandAll()
         hbox.addWidget(typeTree)
-        hbox.addWidget(btn2, 2)
+
+        tableInfo = QTableWidget()
+        tableInfo.setColumnCount(7)
+        tableInfo.setHorizontalHeaderLabels(["文件名", "大小", "状态", "剩余时间", "传输速度", "最后连接", "描述"])
+        hbox.addWidget(tableInfo, 2)
 
         # ----下面3行代码解决在QMainWindow中布局问题
         widget = QWidget()
         widget.setLayout(hbox)
         self.setCentralWidget(widget)
 
-        self.setGeometry(300, 300, 800, 500)
+        self.setGeometry(300, 300, 1000, 600)
         self.center()
         self.setWindowTitle("IWD下载器")
+        self.setWindowIcon(QIcon("./images/download.png"))
         # self.show()
 
     def showNewTaskDialog(self):
