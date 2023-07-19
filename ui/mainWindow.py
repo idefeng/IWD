@@ -2,17 +2,23 @@ import sys
 import os
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction, QMainWindow, qApp, QWidget
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction, QMainWindow, qApp, QWidget, \
+    QTableWidgetItem
 from PyQt5.QtWidgets import QHBoxLayout, QTreeWidget, QTreeWidgetItem, QTableWidget
 
 from services.download_services import download
 
 
 class mainWindow(QMainWindow):
+    get_download_info_signal = pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
 
         self.initUI()
+
+        self.get_download_info_signal.connect(self.showDownloadInfo)
 
     def initUI(self):
         # ---------------状态栏--------------------
@@ -33,7 +39,6 @@ class mainWindow(QMainWindow):
 
         fileMenu.addAction(newTaskAction)
         fileMenu.addAction(extAction)
-        # self.setMenuBar(menuBar)
 
         # ----------------工具栏----------------------------
         toolbar = self.addToolBar("新建下载任务")
@@ -46,6 +51,7 @@ class mainWindow(QMainWindow):
         setting = QAction(QIcon("./images/setting.png"), "配置", self)
         toolbar.addAction(setting)
         ext = QAction(QIcon("./images/exit.png"), "退出", self)
+        ext
         toolbar.addAction(ext)
         # --------------主窗口布局-----------------------------
         hbox = QHBoxLayout()
@@ -89,10 +95,10 @@ class mainWindow(QMainWindow):
         typeTree.expandAll()
         hbox.addWidget(typeTree)
 
-        tableInfo = QTableWidget()
-        tableInfo.setColumnCount(7)
-        tableInfo.setHorizontalHeaderLabels(["文件名", "大小", "状态", "剩余时间", "传输速度", "最后连接", "描述"])
-        hbox.addWidget(tableInfo, 2)
+        self.tableInfo = QTableWidget()
+        self.tableInfo.setColumnCount(7)
+        self.tableInfo.setHorizontalHeaderLabels(["文件名", "大小", "状态", "剩余时间", "传输速度", "最后连接", "描述"])
+        hbox.addWidget(self.tableInfo, 2)
 
         # ----下面3行代码解决在QMainWindow中布局问题
         widget = QWidget()
@@ -110,7 +116,11 @@ class mainWindow(QMainWindow):
         if ok:
             print(url)
             print(os.path.basename(url))
+            self.get_download_info_signal.emit(url)
             download(url, os.path.basename(url))
+
+    def showDownloadInfo(self, str):
+        self.tableInfo.setItem(1, 1, QTableWidgetItem(str))
 
     def center(self):
         qr = self.frameGeometry()
