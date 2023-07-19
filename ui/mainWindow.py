@@ -51,7 +51,8 @@ class mainWindow(QMainWindow):
         setting = QAction(QIcon("./images/setting.png"), "配置", self)
         toolbar.addAction(setting)
         ext = QAction(QIcon("./images/exit.png"), "退出", self)
-        ext
+        ext.triggered.connect(qApp.quit)
+
         toolbar.addAction(ext)
         # --------------主窗口布局-----------------------------
         hbox = QHBoxLayout()
