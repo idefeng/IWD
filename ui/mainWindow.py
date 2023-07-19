@@ -43,6 +43,7 @@ class mainWindow(QMainWindow):
         # ----------------工具栏----------------------------
         toolbar = self.addToolBar("新建下载任务")
         new = QAction(QIcon("./images/new.png"), "新建下载任务", self)
+        new.triggered.connect(self.showNewTaskDialog)
         toolbar.addAction(new)
         start = QAction(QIcon("./images/start.png"), "开始下载", self)
         toolbar.addAction(start)
