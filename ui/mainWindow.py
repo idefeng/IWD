@@ -7,12 +7,10 @@ from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction,
     QTableWidgetItem, QHeaderView
 from PyQt5.QtWidgets import QHBoxLayout, QTreeWidget, QTreeWidgetItem, QTableWidget
 
-# from services.download_services import download
 from services.download_service2 import download
 
 
 class mainWindow(QMainWindow):
-    get_download_info_signal = pyqtSignal(str)
 
     def __init__(self):
         super().__init__()
@@ -21,7 +19,6 @@ class mainWindow(QMainWindow):
         self.initUI()
 
         self.info = dict()
-        # self.get_download_info_signal.connect(self.showDownloadInfo)
 
     def initUI(self):
         # ---------------状态栏--------------------

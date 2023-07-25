@@ -10,7 +10,7 @@ import requests
 # 通过多进程实现实时速度显示
 def download(download_url, download_path, headers) -> {}:
     file_name = os.path.basename(download_path)
-    result = dict()
+    # result = dict()
     with closing(requests.get(download_url, timeout=10, verify=False, stream=True, headers=headers)) as response:
         chunk_size = 1024  # 单次请求最大值
         content_size = int(response.headers['content-length'])
@@ -88,7 +88,8 @@ def format_bytes_num(bytes_num):
 
 if __name__ == '__main__':
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
     }
     download('https://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.2.8.9.exe',
              'e:\\dev\\iwd\\test.exe', headers)
