@@ -4,10 +4,11 @@ import os
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction, QMainWindow, qApp, QWidget, \
-    QTableWidgetItem
+    QTableWidgetItem, QHeaderView
 from PyQt5.QtWidgets import QHBoxLayout, QTreeWidget, QTreeWidgetItem, QTableWidget
 
-from services.download_services import download
+# from services.download_services import download
+from services.download_service2 import download
 
 
 class mainWindow(QMainWindow):
@@ -16,9 +17,11 @@ class mainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.tableInfo = None
         self.initUI()
 
-        self.get_download_info_signal.connect(self.showDownloadInfo)
+        self.info = dict()
+        # self.get_download_info_signal.connect(self.showDownloadInfo)
 
     def initUI(self):
         # ---------------状态栏--------------------
@@ -98,8 +101,13 @@ class mainWindow(QMainWindow):
         hbox.addWidget(typeTree)
 
         self.tableInfo = QTableWidget()
+        self.tableInfo.setRowCount(20)
         self.tableInfo.setColumnCount(7)
-        self.tableInfo.setHorizontalHeaderLabels(["文件名", "大小", "状态", "剩余时间", "传输速度", "最后连接", "描述"])
+        self.tableInfo.setHorizontalHeaderLabels(
+            ["文件名", "大小", "状态", "剩余时间", "传输速度", "最后连接", "下载链接"])
+        self.tableInfo.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)  # 设置表格自适应窗口
+        self.tableInfo.horizontalHeader().setStretchLastSection(True)  # 设置最后一列自动填充窗口
+
         hbox.addWidget(self.tableInfo, 2)
 
         # ----下面3行代码解决在QMainWindow中布局问题
@@ -118,11 +126,23 @@ class mainWindow(QMainWindow):
         if ok:
             print(url)
             print(os.path.basename(url))
-            self.get_download_info_signal.emit(url)
-            download(url, os.path.basename(url))
-
-    def showDownloadInfo(self, str):
-        self.tableInfo.setItem(1, 1, QTableWidgetItem(str))
+            # self.get_download_info_signal.emit(url)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                              'Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE'
+            }
+            self.info = download(url, "e:\\dev\\iwd\\aaa.exe", headers)
+            print(self.info)
+            self.tableInfo.setItem(0, 0, QTableWidgetItem(str(self.info['file_name'])))
+            self.tableInfo.setItem(0, 1, QTableWidgetItem(str(self.info['content_size_formated'])))
+            if self.info['exit']:
+                self.tableInfo.setItem(0, 2, QTableWidgetItem(str("完成")))
+            else:
+                self.tableInfo.setItem(0, 2, QTableWidgetItem(str("未完成")))
+            self.tableInfo.setItem(0, 4, QTableWidgetItem(str(self.info['speed']) + '/S'))
+            self.tableInfo.setItem(0, 3, QTableWidgetItem(str(self.info['data_bytes_formated'])))
+            self.tableInfo.setItem(0, 5, QTableWidgetItem(str(self.info['data_bytes'])))
+            self.tableInfo.setItem(0, 6, QTableWidgetItem(str(self.info['download_url'])))
 
     def center(self):
         qr = self.frameGeometry()
