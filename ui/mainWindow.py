@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication, QDesktopWidget, QInputDialog, QAction,
 from PyQt5.QtWidgets import QHBoxLayout, QTreeWidget, QTreeWidgetItem, QTableWidget
 
 from services.download_service2 import download
+from services.common_services import verify_file_type
 
 
 class mainWindow(QMainWindow):
@@ -58,9 +59,9 @@ class mainWindow(QMainWindow):
         # --------------主窗口布局-----------------------------
         hbox = QHBoxLayout()
 
-        typeTree = QTreeWidget()
-        typeTree.setHeaderLabels(["类型", "数量"])
-        root = QTreeWidgetItem(typeTree)
+        self.typeTree = QTreeWidget()
+        self.typeTree.setHeaderLabels(["类型", "数量"])
+        root = QTreeWidgetItem(self.typeTree)
         root.setText(0, "全部任务")
         root.setIcon(0, QIcon("./images/folder.png"))
 
@@ -94,8 +95,8 @@ class mainWindow(QMainWindow):
         child6.setText(1, "0")
         child6.setIcon(0, QIcon("./images/other.png"))
 
-        typeTree.expandAll()
-        hbox.addWidget(typeTree)
+        self.typeTree.expandAll()
+        hbox.addWidget(self.typeTree)
 
         self.tableInfo = QTableWidget()
         self.tableInfo.setRowCount(20)
@@ -140,6 +141,11 @@ class mainWindow(QMainWindow):
             self.tableInfo.setItem(0, 3, QTableWidgetItem(str(self.info['data_bytes_formated'])))
             self.tableInfo.setItem(0, 5, QTableWidgetItem(str(self.info['data_bytes'])))
             self.tableInfo.setItem(0, 6, QTableWidgetItem(str(self.info['download_url'])))
+
+            if verify_file_type(self.info['file_name']) == 1:
+
+
+
 
     def center(self):
         qr = self.frameGeometry()
