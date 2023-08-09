@@ -101,7 +101,7 @@ def download(url: str, file_name: str, retry_times: int = 3, each_size=16 * MB) 
 
     # 分块
     parts = split(0, file_size, each_size)
-    print(f'分块数：{len(parts)}')
+    # print(f'分块数：{len(parts)}')
     # 创建进度条
     bar = tqdm(total=file_size, desc=f'下载文件：{file_name}')
     for part in parts:
@@ -115,7 +115,8 @@ def download(url: str, file_name: str, retry_times: int = 3, each_size=16 * MB) 
 
 
 if "__main__" == __name__:
-    url = 'https://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.2.8.9.exe'
-    file_name = 'BaiduNetdisk_7.2.8.9.exe'
+    # url = 'https://issuecdn.baidupcs.com/issue/netdisk/yunguanjia/BaiduNetdisk_7.2.8.9.exe'
+    url = 'https://cdn.amfakids.cn/sv/2d6f17b8-1884d21ff75/2d6f17b8-1884d21ff75.mp4'
+    file_name = 'E:\\品.mp4'
     # 开始下载文件
     download(url, file_name)
