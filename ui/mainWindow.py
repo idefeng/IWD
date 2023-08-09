@@ -143,9 +143,7 @@ class mainWindow(QMainWindow):
             self.tableInfo.setItem(0, 6, QTableWidgetItem(str(self.info['download_url'])))
 
             if verify_file_type(self.info['file_name']) == 1:
-
-
-
+                pass
 
     def center(self):
         qr = self.frameGeometry()
