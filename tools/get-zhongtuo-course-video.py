@@ -23,28 +23,28 @@ def start_download(url, filename):
             # sleep(range(0, 5))
 
 
-def main(url):
+def main(base_path, url):
     rs = requests.get(url=url)
     record = eval(str(rs.content, encoding="utf-8"))  # 由于返回是bytes类型，要先转换成str，再转换成dict
     # print(record['data'])
     course_base_name = record['data']['base']['name']  # 课程名称
     # print(course_base_name)
-    base_path = "E:\\course\\"
+
     course_dir = base_path + course_base_name  # 课程目录名称
     createDir(course_dir)  # 创建课程目录
 
-    if record['data'].__contains__('list') :
+    if record['data'].__contains__('list') and len(record['data']['list']) > 0:
         for chapter in range(0, len(record['data']['list'])):
             course_chapter_name = (record['data']['list'][chapter]['name']).replace(" ", "")  # 章名称
             # print(course_chapter_name)
-            course_chapter_dir = course_dir + "\\" + course_chapter_name  # 章目录名称
+            course_chapter_dir = course_dir + "\\" + course_chapter_name  # 章目录路径
             createDir(course_chapter_dir)  # 创建章目录
             chapters = record['data']['list'][chapter]  # 课程下面所有的章
             if chapters.__contains__('lesson') and len(chapters['lesson']) > 0:
                 lessons = record['data']['list'][chapter]['lesson']  # 章下面所有的节
                 for node in range(0, len(lessons)):
                     course_chapter_node_name = lessons[node]['name'].replace(" ", "")  # 节名称
-                    course_chapter_node_dir = course_chapter_dir + "\\" + course_chapter_node_name  # 节目录名称
+                    course_chapter_node_dir = course_chapter_dir + "\\" + course_chapter_node_name  # 节目录路径
                     createDir(course_chapter_node_dir)  # 创建节目录
                     speaks = record['data']['list'][chapter]['lesson'][node]  # 节下面所有的小节
                     if speaks.__contains__('speak'):
@@ -54,28 +54,20 @@ def main(url):
                                 'url'].replace(" ", "")  # 第几讲下载链接
 
                             # 开始下载
-                            final_file_name = base_path + course_base_name + "\\" + course_chapter_name + "\\" + course_chapter_node_name + "\\" + course_chapter_node_speak_name + ".mp4"
-                            if os.path.exists(final_file_name):
-                                print(course_chapter_node_speak_name + " 已下载")
-                            else:
-                                print(course_chapter_node_speak_name + " 开始下载")
-                                try:
-                                    download(url=course_chapter_node_speak_url.replace("\\", ""),
-                                             file_name=base_path + course_base_name + "\\" + course_chapter_name + "\\" + course_chapter_node_name + "\\" + course_chapter_node_speak_name + ".mp4")
-                                except NameError as e:
-                                    print(e)
-                                    # sleep(range(0, 5))
-            else:  # 没有节的情况
+                            final_file_name = course_chapter_node_dir + "\\" + course_chapter_node_speak_name + ".mp4"
+                            start_download(course_chapter_node_speak_url, final_file_name)
+            else:  # 没有章、节的情况，直接下载课程
                 course_chapter_node_speak_name = record['data']['list'][chapter]['video_ids'][0]['resource'][0][
                     'name'].replace(" ", "")
                 course_chapter_node_speak_url = record['data']['list'][chapter]['video_ids'][0]['resource'][0][
                     'url'].replace(" ", "")
-                final_file_name = base_path + course_base_name + '\\' + course_chapter_node_speak_name + ".mp4"
+                final_file_name = course_chapter_dir + '\\' + course_chapter_node_speak_name + ".mp4"
                 start_download(course_chapter_node_speak_url, final_file_name)
 
 
 if __name__ == '__main__':
     # url = "https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=743"
+    base_path = "E:\\course\\"
     urls = [
         'https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=587',
         'https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=743',
@@ -96,4 +88,4 @@ if __name__ == '__main__':
 
     ]
     for url in urls:
-        main(url)
+        main(base_path, url)

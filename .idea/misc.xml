@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="Black">
+    <option name="executionMode" value="BINARY" />
+    <option name="pathToExecutable" value="d:\Users\feng_\anaconda3\Scripts\black.exe" />
+    <option name="sdkUUID" value="82b0d664-377d-49f4-bcdc-c905c5a13530" />
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (IWD)" project-jdk-type="Python SDK" />
   <component name="PythonCompatibilityInspectionAdvertiser">
     <option name="version" value="3" />
