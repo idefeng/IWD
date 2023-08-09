@@ -33,14 +33,14 @@ def main(url):
     course_dir = base_path + course_base_name  # 课程目录名称
     createDir(course_dir)  # 创建课程目录
 
-    if record['data'].__contains__('list'):
+    if record['data'].__contains__('list') :
         for chapter in range(0, len(record['data']['list'])):
             course_chapter_name = (record['data']['list'][chapter]['name']).replace(" ", "")  # 章名称
             # print(course_chapter_name)
             course_chapter_dir = course_dir + "\\" + course_chapter_name  # 章目录名称
             createDir(course_chapter_dir)  # 创建章目录
             chapters = record['data']['list'][chapter]  # 课程下面所有的章
-            if chapters.__contains__('lesson') & len(chapters['lesson']) > 0:
+            if chapters.__contains__('lesson') and len(chapters['lesson']) > 0:
                 lessons = record['data']['list'][chapter]['lesson']  # 章下面所有的节
                 for node in range(0, len(lessons)):
                     course_chapter_node_name = lessons[node]['name'].replace(" ", "")  # 节名称
@@ -75,8 +75,9 @@ def main(url):
 
 
 if __name__ == '__main__':
-    url = "https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=743"
+    # url = "https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=743"
     urls = [
+        'https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=587',
         'https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=743',
         'https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=742',
         'https://jt.tuoyufuwu.org.cn/api/institute/course/info/get?goods_id=741',
