@@ -23,9 +23,9 @@ def start_download(url:str, filename):
     :return: None
     """
     if os.path.exists(filename):
-        print(filename + "-->已下载")
+        print(filename + "\033[32m-->已下载\033[0m")
     else:
-        print(filename + "-->开始下载")
+        print(filename + "\033[31m-->开始下载\033[0m")
         try:
             download(url=url.replace("\\", ""), file_name=filename)
         except NameError as e:
